@@ -22,7 +22,10 @@ function storeBookmark(e){
     if(!urlValue.includes('http://', 'https://')){
         urlValue = `https://${urlValue}`;
     }
-    validate(nameVlaue, urlValue);
+    if(!validate(nameVlaue, urlValue)){
+        return false;
+    }
+    
 }
 
 function validate(nameVlaue, urlValue){
