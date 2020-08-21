@@ -6,6 +6,8 @@ const websiteNameEl = document.getElementById('wedsite-name');
 const websiteUrlEl = document.getElementById('wedsite-url');
 const bookmarksContainer = document.getElementById('bookmarks-container');
 
+let bookmarks = [];
+
 function showModal() {
     modal.classList.add('show-modal');
     websiteNameEl.focus();
@@ -13,6 +15,22 @@ function showModal() {
 
 function closeModal() {
     modal.classList.remove('show-modal');
+}
+
+function fetchBookmarks() {
+    if(localStorage.getItem(bookmarks)){
+        bookmarks = JSON.parse(localStorage.getItem(bookmarks))
+    } else {
+        bookmarks = [
+            {
+                name: "Bob",
+                url: 'https://bob.com'
+            }
+        ];
+        localStorage.setItem('bookmarks',JSON.stringify(bookmarks));
+    }
+    console.log(bookmarks);
+
 }
 
 function storeBookmark(e){
@@ -25,7 +43,17 @@ function storeBookmark(e){
     if(!validate(nameVlaue, urlValue)){
         return false;
     }
-    
+
+    const bookmark = {
+        name: nameVlaue,
+        url: urlValue
+    }
+
+    bookmarks.push(bookmark);
+    localStorage.setItem('bookmarks',JSON.stringify(bookmarks));
+    // fetchBookmarks();
+    bookmarkForm.reset();
+    websiteNameEl.focus();
 }
 
 function validate(nameVlaue, urlValue){
@@ -49,3 +77,5 @@ window.addEventListener('click', (e)=>{e.target === modal ? closeModal() : false
 
 
 bookmarkForm.addEventListener('submit', storeBookmark)
+
+fetchBookmarks();
